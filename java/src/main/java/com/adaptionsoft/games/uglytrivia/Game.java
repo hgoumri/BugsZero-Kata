@@ -4,10 +4,22 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
-    ArrayList players = new ArrayList();
-    int[] places = new int[6];
-    int[] purses  = new int[6];
-    boolean[] inPenaltyBox  = new boolean[6];
+
+	
+	//[Hamza GOUMRI] :  Ajouter private dans tous les attributs de la classe , et pour les tableaux
+     ArrayList players = new ArrayList();
+	
+		// [Hamza GOUMRI] : Ajouter une variable static mieux que les déclater directement 
+     public static final int initialisation = 6;
+     public static final String ROCKQUESTION= "Rock Question ";
+     public static final String POPQUESTION= "Pop Question ";
+     public static final String SCIENCEQUESTION= "Science Question ";
+     public static final String SPORTQUESTION= "Sports Question ";
+		
+	// [Hamza GOUMRI] : Remplacer le 6 par la static final déclaré au dévu
+    int[] places = new int[initialisation];
+    int[] purses  = new int[initialisation];
+    boolean[] inPenaltyBox  = new boolean[initialisation];
     
     LinkedList popQuestions = new LinkedList();
     LinkedList scienceQuestions = new LinkedList();
@@ -17,17 +29,21 @@ public class Game {
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
     
+	// [Hamza GOUMRI] : [Hamza GOUMRI] : Ajouter les getters et les setters des attributs de la classe
+	
+	// [Hamza GOUMRI] : Remplacer le pop;Sport,Scence Question par les static final déclarés au début
     public  Game(){
     	for (int i = 0; i < 50; i++) {
-			popQuestions.addLast("Pop Question " + i);
-			scienceQuestions.addLast(("Science Question " + i));
-			sportsQuestions.addLast(("Sports Question " + i));
+			popQuestions.addLast(POPQUESTION + i);
+			scienceQuestions.addLast((SCIENCEQUESTION + i));
+			sportsQuestions.addLast((SPORTQUESTION + i));
 			rockQuestions.addLast(createRockQuestion(i));
     	}
     }
-
+	
+// [Hamza GOUMRI] : Remplacer le Rock Question par la static final déclaré au début
 	public String createRockQuestion(int index){
-		return "Rock Question " + index;
+		return ROCKQUESTION + index;
 	}
 
 	public boolean isPlayable() {
@@ -84,6 +100,7 @@ public class Game {
 		askQuestion();
 	}
 
+	//[Hamza GOUMRI] : utiliser les Switch case mieux que les if pour une qualité de code
 	private void askQuestion() {
 		if (currentCategory() == "Pop")
 			System.out.println(popQuestions.removeFirst());
@@ -95,7 +112,7 @@ public class Game {
 			System.out.println(rockQuestions.removeFirst());		
 	}
 	
-	
+	//[Hamza GOUMRI] : utiliser les Switch case mieux que les if pour une qualité de code
 	private String currentCategory() {
 		if (places[currentPlayer] == 0) return "Pop";
 		if (places[currentPlayer] == 4) return "Pop";
@@ -108,22 +125,24 @@ public class Game {
 		if (places[currentPlayer] == 10) return "Sports";
 		return "Rock";
 	}
-
+// [Hamza GOUMRI] : Cette méthode a changer a cause mauvaise manip 
 	public boolean wasCorrectlyAnswered() {
 		if (inPenaltyBox[currentPlayer]){
 			if (isGettingOutOfPenaltyBox) {
 				System.out.println("Answer was correct!!!!");
-				currentPlayer++;
-				if (currentPlayer == players.size()) currentPlayer = 0;
 				purses[currentPlayer]++;
+				
 				System.out.println(players.get(currentPlayer)
 						+ " now has "
 						+ purses[currentPlayer]
 						+ " Gold Coins.");
 
-				boolean winner = didPlayerWin();
-
-				return winner;
+		              boolean winner = didPlayerWin();
+				 if (currentPlayer == players.size())
+                                    currentPlayer = 0;
+                             
+				
+	return winner;
 			} else {
 				currentPlayer++;
 				if (currentPlayer == players.size()) currentPlayer = 0;
@@ -161,6 +180,6 @@ public class Game {
 
 
 	private boolean didPlayerWin() {
-		return !(purses[currentPlayer] == 6);
+		return (purses[currentPlayer] =! initialisation);
 	}
 }
